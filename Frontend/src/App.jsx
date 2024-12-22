@@ -12,26 +12,32 @@ import Orders from "./pages/Orders";
 import Navbar from "./components/Navbar";
 import ShopContextProvider from "./context/ShopContext.jsx";
 import Footer from "./components/Footer.jsx";
+import SerachBar from "./components/SerachBar.jsx";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const App = () => {
   return (
-    <ShopContextProvider>
-       <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/collection" element={<Collection />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/product/:productId" element={<Product />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/place-order" element={<PlaceOrder />} />
-        <Route path="/orders" element={<Orders />} />
-      </Routes>
-      <Footer/>
-    </div>
+    <ShopContextProvider> {/* Provide shop context to the app */}
+      <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
+        <ToastContainer /> {/* Container for toast notifications */}
+        <Navbar /> {/* Navigation bar */}
+        <SerachBar /> {/* Search bar component */}
+        <Routes>
+          {/* Define routes for different pages */}
+          <Route path="/" element={<Home />} />
+          <Route path="/collection" element={<Collection />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/product/:productId" element={<Product />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/place-order" element={<PlaceOrder />} />
+          <Route path="/orders" element={<Orders />} />
+        </Routes>
+        <Footer /> {/* Footer component */}
+      </div>
     </ShopContextProvider>
-   
   );
 };
 
