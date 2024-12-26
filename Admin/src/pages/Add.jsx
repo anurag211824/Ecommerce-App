@@ -259,7 +259,7 @@ const Add = ({ token }) => {
           Add to bestseller
         </label>
       </div>
-      <button className="w-28 py-3 mt-4 bg-black text-white" type="submit">
+      <button onClick={()=>setBestseller(true)} className="w-28 py-3 mt-4 bg-black text-white" type="submit">
         ADD
       </button>
     </form>
