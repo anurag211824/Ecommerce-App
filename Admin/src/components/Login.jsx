@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { backEndUrl } from "../App";
 
 const Login = ({ setToken }) => {
   const [email, setEmail] = useState("");
@@ -10,7 +11,7 @@ const Login = ({ setToken }) => {
     try {
       e.preventDefault();
       const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/user/admin`, // Updated URL
+        `${backEndUrl}/api/user/admin`, 
         { email, password }
       );
       console.log("Response received:", response.data);

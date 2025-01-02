@@ -8,5 +8,4 @@ const Navbar = ({setToken}) => {
     </div>
   )
 }
-
 export default Navbar
