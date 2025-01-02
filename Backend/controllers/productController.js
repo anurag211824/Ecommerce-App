@@ -49,7 +49,7 @@ const addProduct = async (req, res) => {
       category, // Product category
       price: Number(price), // Converting price to number
       subCategory, // Product sub-category
-      bestseller: bestseller === true ? true : false, // Ensuring bestseller is a boolean
+      bestseller: bestseller === "true", // Converts string "true" to boolean true
       sizes: JSON.parse(sizes), // Parsing sizes (assumed to be a JSON string)
       image: imagesUrl, // Storing the image URLs from Cloudinary
       date: Date.now(), // Storing the current date and time
