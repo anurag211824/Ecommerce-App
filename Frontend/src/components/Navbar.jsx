@@ -5,10 +5,21 @@ import "../index.css";
 import { ShopContext } from "../context/ShopContext";
 
 const Navbar = () => {
-  const { setShowSearch, getCartCount } = useContext(ShopContext); // Access context values
+  const {
+    setShowSearch,
+    getCartCount,
+    token,
+    setToken,
+    navigate,
+    setCartItems,
+  } = useContext(ShopContext); // Access context values
   const [visible, setVisible] = useState(false); // Manage visibility of mobile menu
-  const navigate = useNavigate(); // Use navigate for routing
-
+  const logout = () => {
+    navigate("/login");
+    localStorage.removeItem("token");
+    setToken("");
+    setCartItems({});
+  };
   return (
     <div className="flex items-center justify-between py-5 font-medium">
       {/* Logo and app link */}
@@ -72,23 +83,27 @@ const Navbar = () => {
           alt=""
           className="w-5 cursor-pointer"
         />
-        
+
         {/* Profile icon with dropdown */}
         <div className="group relative">
-          <Link to="/login">
-            <img
-              src={assets.profile_icon}
-              alt=""
-              className="w-5 cursor-pointer"
-            />
-          </Link>
-          <div className="group-hover:block hidden absolute dropdown-menu right-0 pt-4">
-            <div className="flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-black">
-              <p className="cursor-pointer hover:text-black">My Profile</p>
-              <p className="cursor-pointer hover:text-black">Orders</p>
-              <p className="cursor-pointer hover:text-black">Logout</p>
+          <img
+            onClick={() => (token ? null : navigate("/login"))}
+            src={assets.profile_icon}
+            alt=""
+            className="w-5 cursor-pointer"
+          />
+          {/* DropDown Menu */}
+          {token && (
+            <div className="group-hover:block hidden absolute dropdown-menu right-0 pt-4">
+              <div className="flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-black">
+                <p className="cursor-pointer hover:text-black">My Profile</p>
+                <p onClick={()=>navigate('/orders')} className="cursor-pointer hover:text-black">Orders</p>
+                <p onClick={logout} className="cursor-pointer hover:text-black">
+                  Logout
+                </p>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Cart icon with item count */}
@@ -129,7 +144,9 @@ const Navbar = () => {
             onClick={() => setVisible(false)}
             className={({ isActive }) =>
               `py-2 pl-6 border ${
-                isActive ? "bg-black text-white" : "bg-transparent text-gray-700"
+                isActive
+                  ? "bg-black text-white"
+                  : "bg-transparent text-gray-700"
               }`
             }
             to="/"
@@ -140,7 +157,9 @@ const Navbar = () => {
             onClick={() => setVisible(false)}
             className={({ isActive }) =>
               `py-2 pl-6 border ${
-                isActive ? "bg-black text-white" : "bg-transparent text-gray-700"
+                isActive
+                  ? "bg-black text-white"
+                  : "bg-transparent text-gray-700"
               }`
             }
             to="/collection"
@@ -151,7 +170,9 @@ const Navbar = () => {
             onClick={() => setVisible(false)}
             className={({ isActive }) =>
               `py-2 pl-6 border ${
-                isActive ? "bg-black text-white" : "bg-transparent text-gray-700"
+                isActive
+                  ? "bg-black text-white"
+                  : "bg-transparent text-gray-700"
               }`
             }
             to="/about"
@@ -162,7 +183,9 @@ const Navbar = () => {
             onClick={() => setVisible(false)}
             className={({ isActive }) =>
               `py-2 pl-6 border ${
-                isActive ? "bg-black text-white" : "bg-transparent text-gray-700"
+                isActive
+                  ? "bg-black text-white"
+                  : "bg-transparent text-gray-700"
               }`
             }
             to="/contact"

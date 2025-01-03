@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 // import { products } from "../assets/frontend_assets/assets";
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"
+import axios from "axios";
 
 // Create a context for the shop
 export const ShopContext = createContext();
@@ -10,12 +10,12 @@ export const ShopContext = createContext();
 const ShopContextProvider = (props) => {
   const currency = "$"; // Currency symbol
   const delivery_fee = 10; // Fixed delivery fee
-  const backEndUrl=import.meta.env.VITE_BACKEND_URL
+  const backEndUrl = import.meta.env.VITE_BACKEND_URL;
   // State for search input and its visibility
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
-  const [products,setproducts]=useState([])
-
+  const [products, setProducts] = useState([]);
+  const [token,setToken]=useState('')
 
   // State to store cart items
   const [cartItems, setCartItems] = useState({});
@@ -96,20 +96,28 @@ const ShopContextProvider = (props) => {
   useEffect(() => {
     console.log(cartItems);
   }, [cartItems]);
-  
-  const getProductsData= async ()=>{
-    try{
-      const response=await axios.get(`${backEndUrl}/api/product/list`)
+
+  const getProductsData = async () => {
+    try {
+      const response = await axios.get(`${backEndUrl}/api/product/list`);
       console.log(response.data);
-
-      
+      if (response.data.success) {
+        setProducts(response.data.products);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
     }
-    catch(error){
-
-    }
-  }
+  };
+  useEffect(() => {
+    getProductsData();
+  }, []);
   useEffect(()=>{
-   getProductsData()
+  if(!token && localStorage.getItem('token')){
+    setToken(localStorage.getItem('token'))
+  }
   },[])
   return (
     <ShopContext.Provider
@@ -126,7 +134,10 @@ const ShopContextProvider = (props) => {
         getCartCount,
         updateQuantity,
         getCartAmount,
-        navigate,backEndUrl
+        navigate,
+        backEndUrl,
+        token,
+        setToken,
       }}
     >
       {props.children} {/* Render child components */}

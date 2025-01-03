@@ -13,7 +13,7 @@ const BestSeller = () => {
 
     // Store the top 5 bestseller products in the state.
     setBestSeller(bestProducts.slice(0, 5));
-  }, []);
+  }, [products]);
 
   return (
     <div className="my-10">

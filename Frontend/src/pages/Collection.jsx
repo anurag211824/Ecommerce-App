@@ -79,7 +79,7 @@ const Collection = () => {
   // Re-run applyFilter whenever category, subCategory, search, or showSearch change
   useEffect(() => {
     applyFilter();
-  }, [category, subCategory, search, showSearch]);
+  }, [category, subCategory, search, showSearch,products]);
 
   // Re-run sortProduct whenever sortType changes
   useEffect(() => {
