@@ -11,22 +11,27 @@ const Cart = () => {
   const [cartData, setCartData] = useState([]); // State to hold the formatted cart data
 
   useEffect(() => {
-    // Generate cartData from the cartItems in the context
     const tempData = [];
-    // Loop through cartItems and push valid items to tempData
-    for (const items in cartItems) {
-      for (const item in cartItems[items]) {
-        if (cartItems[items][item] > 0) { // Ensure item quantity is positive
-          tempData.push({
-            _id: items, // Product ID
-            size: item, // Product size
-            quantity: cartItems[items][item], // Product quantity
-          });
+    if (products.length > 0) {
+    
+      // Loop through cartItems and push valid items to tempData
+      for (const items in cartItems) {
+        for (const item in cartItems[items]) {
+          if (cartItems[items][item] > 0) {
+            // Ensure item quantity is positive
+            tempData.push({
+              _id: items, // Product ID
+              size: item, // Product size
+              quantity: cartItems[items][item], // Product quantity
+            });
+          }
         }
       }
     }
+    // Generate cartData from the cartItems in the context
+
     setCartData(tempData); // Set formatted data to state
-  }, [cartItems]); // Re-run whenever cartItems changes
+  }, [cartItems,products]); // Re-run whenever cartItems changes
 
   return (
     <div className="border-t pt-14">
@@ -77,7 +82,11 @@ const Cart = () => {
                   // Update the quantity when the user enters a new value
                   e.target.value === "" || e.target.value == 0
                     ? null
-                    : updateQuantity(item._id, item.size, Number(e.target.value))
+                    : updateQuantity(
+                        item._id,
+                        item.size,
+                        Number(e.target.value)
+                      )
                 }
                 className="border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1"
                 type="number"
@@ -104,7 +113,7 @@ const Cart = () => {
           <div className="w-full text-end">
             {/* Button to proceed to checkout page */}
             <button
-              onClick={() => navigate('./place-order')}
+              onClick={() => navigate("./place-order")}
               className="bg-black text-white text-sm my-8 px-8 py-3"
             >
               PROCEED TO CHECKOUT

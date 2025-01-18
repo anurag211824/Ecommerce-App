@@ -1,12 +1,40 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
 import Title from "../components/Title";
+import axios from "axios";
 
 const Orders = () => {
-  const { products, currency } = useContext(ShopContext); // Access products and currency from context
+  const { backEndUrl, currency, token } = useContext(ShopContext);
+  const [orderData, setOrderData] = useState([]);
+  const loadorderData = async () => {
+    if (!token) return null;
+    const response = await axios.post(
+      `${backEndUrl}/api/order/userorders`,
+      {},
+      { headers: { token } }
+    );
+    console.log(response.data);
 
+    if (response.data.success) {
+      let allOrderitem = [];
+      response.data.orders.map((order) => {
+        order.items.map((item) => {
+          item["status"] = order.status;
+          item["payment"] = order.payment;
+          item["paymentMethod"] = order.paymentMethod;
+          item["date"] = order.date;
+          allOrderitem.push(item);
+        });
+      });
+      console.log(allOrderitem);
+      setOrderData(allOrderitem.reverse());
+    }
+  };
+  useEffect(() => {
+    loadorderData();
+  }, [token]);
   return (
-    <div className="border-t pt-16">
+    <div className="border-t">
       {/* Orders Title */}
       <div className="text-t pt-16">
         <Title text1={"MY"} text2={"ORDERS"} />
@@ -14,7 +42,7 @@ const Orders = () => {
 
       <div>
         {/* Map through orders and display details */}
-        {products.slice(1, 4).map((item, index) => (
+        {orderData.map((item, index) => (
           <div
             className="py-4 border-t border-b text-gray-700 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
             key={index}
@@ -29,11 +57,18 @@ const Orders = () => {
                     {currency}
                     {item.price}
                   </p>
-                  <p>Quantity: 1</p>
-                  <p>Size: M</p>
+                  <p>Quantity: {item.quantity}</p>
+                  <p>Size:{item.size}</p>
                 </div>
                 <p className="mt-2">
-                  Date: <span className="text-gary-400">25, Jul 2024</span>
+                  Date:{" "}
+                  <span className="text-gary-400">
+                    {new Date(item.date).toDateString()}
+                  </span>
+                </p>
+                <p className="mt-2">
+                  Payment:{" "}
+                  <span className="text-gary-400">{item.paymentMethod}</span>
                 </p>
               </div>
             </div>
@@ -41,10 +76,13 @@ const Orders = () => {
               {/* Order Status and Track Order Button */}
               <div className="flex items-center gap-2">
                 <p className="min-w-2 h-2 rounded-full bg-green-500"></p>
-                <p className="text-sm md:text-base">Ready to ship</p>
+                <p className="text-sm md:text-base">{item.status}</p>
               </div>
 
-              <button className="border px-4 py-2 text-sm font-medium rounded-sm">
+              <button
+                onClick={loadorderData}
+                className="border px-4 py-2 text-sm font-medium rounded-sm"
+              >
                 Track Order
               </button>
             </div>

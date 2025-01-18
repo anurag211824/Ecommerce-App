@@ -15,6 +15,7 @@ import Footer from "./components/Footer.jsx";
 import SerachBar from "./components/SerachBar.jsx";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Myprofile from "./pages/Myprofile.jsx";
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/place-order" element={<PlaceOrder />} />
           <Route path="/orders" element={<Orders />} />
+          <Route path="/myprofile" element={<Myprofile />} />
         </Routes>
         <Footer /> {/* Footer component */}
       </div>

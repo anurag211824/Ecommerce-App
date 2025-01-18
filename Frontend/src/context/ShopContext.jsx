@@ -44,6 +44,18 @@ const ShopContextProvider = (props) => {
     }
 
     setCartItems(cartData); // Update cart
+    if (token) {
+      try {
+        await axios.post(
+          `${backEndUrl}/api/cart/add`,
+          { itemId, size },
+          { headers: { token } }
+        );
+      } catch (error) {
+        toast.error("Failed to add item to cart");
+        console.log(error);
+      }
+    }
   };
 
   // Get the total count of items in the cart
@@ -70,6 +82,18 @@ const ShopContextProvider = (props) => {
     let cartData = structuredClone(cartItems);
     cartData[itemId][size] = quantity; // Update quantity for specific item and size
     setCartItems(cartData); // Update cart
+    if (token) {
+      try {
+        await axios.post(
+          `${backEndUrl}/api/cart/update`,
+          { itemId, size, quantity },
+          { headers: { token } }
+        );
+      } catch (error) {
+        toast.error("Failed to update cart item quantity");
+        console.log(error);
+      }
+    }
   };
 
   // Calculate the total cart amount
@@ -111,12 +135,30 @@ const ShopContextProvider = (props) => {
       toast.error(error.message);
     }
   };
+  const getUserData = async (token) => {
+    try {
+      const response = await axios.post(
+        `${backEndUrl}/api/cart/get`,
+        {},
+        { headers: { token } }
+      );
+      if (response.data.success) {
+        console.log(response.data);
+        setCartItems(response.data.cartData);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
+
   useEffect(() => {
     getProductsData();
   }, []);
   useEffect(() => {
     if (!token && localStorage.getItem("token")) {
       setToken(localStorage.getItem("token"));
+      getUserData(localStorage.getItem("token"));
     }
   }, []);
   return (
@@ -132,6 +174,7 @@ const ShopContextProvider = (props) => {
         cartItems,
         addToCart,
         getCartCount,
+        setCartItems,
         updateQuantity,
         getCartAmount,
         navigate,
