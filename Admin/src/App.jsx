@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import { Route, Routes } from "react-router-dom";
@@ -8,6 +8,7 @@ import Order from "./pages/Order";
 import Login from "./components/Login";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+// eslint-disable-next-line react-refresh/only-export-components
 export const backEndUrl=import.meta.env.VITE_BACKEND_URL
 export const currency ="$"
 const App = () => {

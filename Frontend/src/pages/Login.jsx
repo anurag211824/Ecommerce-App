@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import  { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -66,6 +66,7 @@ useEffect(()=>{
  if(token){
   navigate('/')
  }
+// eslint-disable-next-line react-hooks/exhaustive-deps
 },[token])
   return (
     <form
