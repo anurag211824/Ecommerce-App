@@ -9,9 +9,11 @@ const Login = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-
+  console.log(currentState);
   const onSubmitHandler = async (event) => {
     event.preventDefault();
+    console.log(currentState);
+    
     try {
       if (currentState === "Sign Up") {
         try {
@@ -20,7 +22,7 @@ const Login = () => {
             email,
             password,
           });
-          console.log(response.data);
+          //console.log(response.data);
           if (response.data.success) {
             setToken(response.data.token);
             localStorage.setItem("token", response.data.token);

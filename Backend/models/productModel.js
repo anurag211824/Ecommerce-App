@@ -12,7 +12,6 @@ const productSchema = new mongoose.Schema({
 });
 // using this  productSchemawe will create productModel
 // if the productModel is already availabel then that model will be used
-const productModel =
-  mongoose.model.product || mongoose.model("product", productSchema);
+const productModel =mongoose.model.product || mongoose.model("product", productSchema);
 
 export default productModel;
